@@ -29,23 +29,34 @@ def get_data(baseurl):
         html = get_html(url)
         bs = BeautifulSoup(html, "html.parser")
         for item in bs.find_all('div', class_='item'):
+            data = []
             item = str(item)
-            # print(i)
             name = find_name.search(item).group(1)
-            print(name)
+            # print(name)
+            data.append(name)
             href = find_href.search(item).group(1)
-            print(href)
+            # print(href)
+            data.append(href)
             imgSrc = find_imgSrc.search(item).group(1)
-            print(imgSrc)
+            # print(imgSrc)
+            data.append(imgSrc)
             rating = find_rating.search(item).group(1)
-            print(rating)
+            # print(rating)
+            data.append(rating)
             judge = find_judge.search(item).group(1)
-            print(judge)
+            # print(judge)
+            data.append(judge)
             if find_intro.search(item):  # 部分电影没有简评，直接调用group方法会报错
-                intro = find_intro.search(item).group(1)
-                print(intro)
+                intro = find_intro.search(item).group(1).replace("。", "")
+                # print(intro)
+                data.append(intro)
+            else:
+                data.append(" ")
             bg = find_bg1.search(item).group(1) + " " + find_bg2.search(item).group(1)
-            print(bg)
+            # print(bg)
+            data.append(bg)
+            datalist.append(data)
+    return datalist
 
 
 # 获取单个页面html源码
