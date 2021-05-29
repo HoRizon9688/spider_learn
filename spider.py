@@ -84,14 +84,41 @@ def save_data(datalist):
         worksheet.write(0, i, column[i])
     for i in range(len(datalist)):
         for j in range(len(datalist[i])):
-            worksheet.write(i+1, j, datalist[i][j])
+            worksheet.write(i + 1, j, datalist[i][j])
     workbook.save('douban.xls')
+
+
+def save_database(datalist):
+    database = sqlite3.connect('movie250.db')
+    cursor = database.cursor()
+    table_init_sql = '''
+                        create table movie250(
+                        name varchar primary key,
+                        href varchar not null,
+                        imgSrc varchar not null,
+                        rating real not null,
+                        judges int not null,
+                        brief text,
+                        information text not null);
+    '''
+    cursor.execute(table_init_sql)
+    database.commit()
+    for data in datalist:
+        for index in range(len(data)):
+            data[index] = ("\"" + data[index] + "\"")
+        data_insert_sql = '''
+                             insert into movie250(name,href,imgSrc,rating,judges,brief,information)
+                             values(%s)''' % ",".join(data)
+        cursor.execute(data_insert_sql)
+    database.commit()
+    cursor.close()
+    database.close()
 
 
 if __name__ == "__main__":
     datalist = get_data("https://movie.douban.com/top250?start=")
-    # 保存到douban.xls表格中
-    save_data(datalist)
+    # save_data(datalist)  # 保存到douban.xls表格中
+    save_database(datalist)  # 保存到sqlite数据库中
     # print(a)
     # 将爬取的信息保存到本地data.txt中
     # f = open("data.txt", 'w', encoding='utf-8')
