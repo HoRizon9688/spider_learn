@@ -30,5 +30,8 @@ def get_html(url):
 
 if __name__ == "__main__":
     a = get_html("https://movie.douban.com/top250?start=0")
-    print(a)
+    # print(a)
+    f = open("data.txt", 'w', encoding='utf-8')
+    f.write(a)
+    f.close()
 
