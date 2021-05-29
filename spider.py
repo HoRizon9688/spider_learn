@@ -76,15 +76,22 @@ def get_html(url):
     return html
 
 
+def save_data(datalist):
+    workbook = xlwt.Workbook(encoding='utf-8')
+    worksheet = workbook.add_sheet('sheet1')
+    column = ("电影名", "豆瓣链接", "封面链接", "评分", "评价人数", "简评", "相关信息")
+    for i in range(7):
+        worksheet.write(0, i, column[i])
+    for i in range(len(datalist)):
+        for j in range(len(datalist[i])):
+            worksheet.write(i+1, j, datalist[i][j])
+    workbook.save('douban.xls')
+
+
 if __name__ == "__main__":
     datalist = get_data("https://movie.douban.com/top250?start=")
     # 保存到douban.xls表格中
-    workbook = xlwt.Workbook(encoding='utf-8')
-    worksheet = workbook.add_sheet('sheet1')
-    for i in range(len(datalist)):
-        for j in range(len(datalist[i])):
-            worksheet.write(i, j, datalist[i][j])
-    workbook.save('douban.xls')
+    save_data(datalist)
     # print(a)
     # 将爬取的信息保存到本地data.txt中
     # f = open("data.txt", 'w', encoding='utf-8')
