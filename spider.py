@@ -19,7 +19,7 @@ def get_html(url):
     html = ""
     try:
         response = urllib.request.urlopen(request)
-        html = response.read().decode("utf-8").replace('&nbsp;', '')
+        html = response.read().decode("utf-8").replace("&nbsp;", " ")
     except urllib.error.URLError as e:
         if hasattr(e, "code"):
             print(e.code)
@@ -31,3 +31,4 @@ def get_html(url):
 if __name__ == "__main__":
     a = get_html("https://movie.douban.com/top250?start=0")
     print(a)
+
