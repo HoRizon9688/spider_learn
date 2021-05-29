@@ -11,7 +11,43 @@ import urllib.error
 import xlwt
 import sqlite3
 
+# baseurl = "https://movie.douban.com/top250?start="
+find_name = re.compile(r'<span class="title">(.*)</span>')
+find_href = re.compile(r'<a href="(.*?)">')
+find_imgSrc = re.compile(r'<img.*src="(.*?)"', re.S)
+find_rating = re.compile(r'<span class="rating_num" property="v:average">(.*)</span>')
+find_judge = re.compile(r'<span>(\d*)人评价</span>')
+find_intro = re.compile(r'<span class="inq">(.*)</span>')
+find_bg1 = re.compile(r'<p class="">\s*(.*?)<br/>', re.S)
+find_bg2 = re.compile(r'<p class="">.*<br/>\s*(.*?)</p>', re.S)
 
+
+def get_data(baseurl):
+    datalist = []
+    for i in range(0, 10):
+        url = baseurl + str(i * 25)
+        html = get_html(url)
+        bs = BeautifulSoup(html, "html.parser")
+        for item in bs.find_all('div', class_='item'):
+            item = str(item)
+            # print(i)
+            name = find_name.search(item).group(1)
+            href = find_href.search(item).group(1)
+            imgSrc = find_imgSrc.search(item).group(1)
+            rating = find_rating.search(item).group(1)
+            judge = find_judge.search(item).group(1)
+            intro = find_intro.search(item).group(1)
+            bg = find_bg1.search(item).group(1) + " " + find_bg2.search(item).group(1)
+            print(name)
+            print(href)
+            print(imgSrc)
+            print(rating)
+            print(judge)
+            print(intro)
+            print(bg)
+
+
+# 获取单个页面html源码
 def get_html(url):
     headers = {
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"}
@@ -29,9 +65,9 @@ def get_html(url):
 
 
 if __name__ == "__main__":
-    a = get_html("https://movie.douban.com/top250?start=0")
+    get_data("https://movie.douban.com/top250?start=")
     # print(a)
-    f = open("data.txt", 'w', encoding='utf-8')
-    f.write(a)
-    f.close()
-
+    # 将爬取的信息保存到本地data.txt中
+    # f = open("data.txt", 'w', encoding='utf-8')
+    # f.write(a)
+    # f.close()
