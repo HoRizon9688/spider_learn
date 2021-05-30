@@ -5,6 +5,9 @@
 
 import re
 
+
+# 两种匹配方式均可获得结果，一种使用两个正则表达式区分别匹配<br/>前面和后面的数据，然后再拼接起来
+# 第二种匹配方式为使用.*进行全部匹配，然后使用.strip()方法去掉空格，然后再用正则表达式匹配空格再删去
 # pattern1 = re.compile(r'<p class="">\s*(.*)<br/>', re.S)
 # pattern2 = re.compile(r'<p class="">.*<br/>\s*(.*)</p>', re.S)
 pattern = re.compile(r'<p class="">(.*)</p>', re.S)

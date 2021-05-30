@@ -11,7 +11,7 @@ import urllib.error
 import xlwt
 import sqlite3
 
-# baseurl = "https://movie.douban.com/top250?start="
+# baseurl = "https://movie.douban.com/top250?start="  # 豆瓣起始页，每页有25个条目，共十页 250条
 find_name = re.compile(r'<span class="title">(.*)</span>')
 find_href = re.compile(r'<a href="(.*?)">')
 find_imgSrc = re.compile(r'<img.*src="(.*?)"', re.S)
@@ -47,7 +47,7 @@ def get_data(baseurl):
             judge = find_judge.search(item).group(1)
             # print(judge)
             data.append(judge)
-            if find_intro.search(item):  # 部分电影没有简评，直接调用group方法会报错
+            if find_intro.search(item):  # 部分电影没有简评，直接调用group方法会报错，同时将data列表此项留空，保证结构的统一性
                 intro = find_intro.search(item).group(1).replace("。", "")
                 # print(intro)
                 data.append(intro)

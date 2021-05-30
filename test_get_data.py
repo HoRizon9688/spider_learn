@@ -22,6 +22,8 @@ find_bg2 = re.compile(r'<p class="">.*<br/>\s*(.*?)</p>', re.S)
 for i in bs.find_all('div', class_='item'):
     i = str(i)
     # print(i)
+
+    # 此处采用的是search方法，只匹配第一个符合的结果，也可以使用re.findall()来查找所有结果，返回的是一个列表
     name = find_name.search(i).group(1)
     href = find_href.search(i).group(1)
     imgSrc = find_imgSrc.search(i).group(1)
