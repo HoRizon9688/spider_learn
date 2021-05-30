@@ -22,6 +22,7 @@ find_bg1 = re.compile(r'<p class="">\s*(.*?)<br/>', re.S)
 find_bg2 = re.compile(r'<p class="">.*<br/>\s*(.*?)</p>', re.S)
 
 
+# 从获取的网页中找到需要的内容（解析）
 def get_data(baseurl):
     datalist = []
     for i in range(0, 10):
@@ -76,6 +77,7 @@ def get_html(url):
     return html
 
 
+# 将获取的数据存入到xls表格中
 def save_data(datalist):
     workbook = xlwt.Workbook(encoding='utf-8')
     worksheet = workbook.add_sheet('sheet1')
@@ -88,12 +90,14 @@ def save_data(datalist):
     workbook.save('douban.xls')
 
 
+# 将获取到的数据存入sqlite数据库中
 def save_database(datalist):
     database = sqlite3.connect('movie250.db')
     cursor = database.cursor()
     table_init_sql = '''
                         create table movie250(
-                        name varchar primary key,
+                        id integer primary key autoincrement,
+                        name varchar not null ,
                         href varchar not null,
                         imgSrc varchar not null,
                         rating real not null,
