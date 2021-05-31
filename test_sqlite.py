@@ -5,7 +5,7 @@
 
 import sqlite3
 
-# 首先创建database对象链接数据库，然后闯将一个游标对象来实现对数据表的操作，操作完毕后需要将游标和数据库关闭
+# 首先创建database对象链接数据库，然后创建一个游标对象来实现对数据表的操作，操作完毕后需要将游标和数据库关闭
 database = sqlite3.connect('movie250.db')
 cursor = database.cursor()
 sql = '''select rating, count(rating) from movie250 group by rating'''
